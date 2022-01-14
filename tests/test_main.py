@@ -259,7 +259,7 @@ def test_distance_class_gt(kilometers, kilometers2, result):
 def test_distance_class_ge(kilometers, kilometers2, result):
     distance = Distance(kilometers)
     assert (distance >= kilometers2) is result, (
-        f"'Distance({kilometers}) => {kilometers2}' should equal to {result}"
+        f"'Distance({kilometers}) >= {kilometers2}' should equal to {result}"
     )
 
 
@@ -308,6 +308,3 @@ def test_distance_class_len(kilometers):
     assert len(distance) == distance.km, (
         f"'len()' for instance should return instance.km"
     )
-
-
-
