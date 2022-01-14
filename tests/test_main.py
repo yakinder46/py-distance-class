@@ -3,8 +3,7 @@ import pytest
 
 from contextlib import redirect_stdout
 
-# from app.main import Distance
-from app.Distance import Distance
+from app.main import Distance
 
 @pytest.mark.parametrize(
     'kilometers',
@@ -181,7 +180,7 @@ def test_distance_class_mul(kilometers, number, result):
         (45, 5, 9)
     ]
 )
-def test_distance_class_mul(kilometers, number, result):
+def test_distance_class_truediv(kilometers, number, result):
     distance1 = Distance(kilometers)
     distance2 = distance1 / number
     assert isinstance(distance2, Distance), (
@@ -195,23 +194,19 @@ def test_distance_class_mul(kilometers, number, result):
 
 
 @pytest.mark.parametrize(
-    'kilometers,number,result',
+    'kilometers,kilometers2,result',
     [
-        (50, 20, 10),
-        (30, 100, 30),
-        (45, 10, 5)
+        (50, 50, True),
+        (100, 30, False),
+        (300, 100, False),
+        (30, 30, True)
     ]
 )
-def test_distance_class_mul(kilometers, number, result):
+def test_distance_class_eq_distance(kilometers, kilometers2, result):
     distance1 = Distance(kilometers)
-    distance2 = distance1 % number
-    assert isinstance(distance2, Distance), (
-        "Result of Distance instance modulo number should be "
-        "Distance instance"
-    )
-    assert distance2.km == result, (
-        f"distance2.km should equal to {result}, "
-        f"when 'distance2 = Distance({kilometers}) % {number}'"
+    distance2 = Distance(kilometers2)
+    assert (distance1 == distance2) is result, (
+        f"'Distance({kilometers}) == Distance({kilometers2})' should equal to {result}"
     )
 
 
@@ -224,7 +219,7 @@ def test_distance_class_mul(kilometers, number, result):
         (30, 30, True)
     ]
 )
-def test_distance_class_eq(kilometers, kilometers2, result):
+def test_distance_class_eq_number(kilometers, kilometers2, result):
     distance = Distance(kilometers)
     assert (distance == kilometers2) is result, (
         f"'Distance({kilometers}) == {kilometers2}' should equal to {result}"
@@ -240,7 +235,24 @@ def test_distance_class_eq(kilometers, kilometers2, result):
         (30, 100, False)
     ]
 )
-def test_distance_class_gt(kilometers, kilometers2, result):
+def test_distance_class_gt_distance(kilometers, kilometers2, result):
+    distance1 = Distance(kilometers)
+    distance2 = Distance(kilometers2)
+    assert (distance1 > distance2) is result, (
+        f"'Distance({kilometers}) > Distance{kilometers2}' should equal to {result}"
+    )
+
+
+@pytest.mark.parametrize(
+    'kilometers,kilometers2,result',
+    [
+        (50, 50, False),
+        (100, 30, True),
+        (300, 100, True),
+        (30, 100, False)
+    ]
+)
+def test_distance_class_gt_number(kilometers, kilometers2, result):
     distance = Distance(kilometers)
     assert (distance > kilometers2) is result, (
         f"'Distance({kilometers}) > {kilometers2}' should equal to {result}"
@@ -256,7 +268,24 @@ def test_distance_class_gt(kilometers, kilometers2, result):
         (30, 100, False)
     ]
 )
-def test_distance_class_ge(kilometers, kilometers2, result):
+def test_distance_class_ge_distance(kilometers, kilometers2, result):
+    distance1 = Distance(kilometers)
+    distance2 = Distance(kilometers2)
+    assert (distance1 >= distance2) is result, (
+        f"'Distance({kilometers}) >= Distance({kilometers2})' should equal to {result}"
+    )
+
+
+@pytest.mark.parametrize(
+    'kilometers,kilometers2,result',
+    [
+        (50, 50, True),
+        (100, 30, True),
+        (300, 100, True),
+        (30, 100, False)
+    ]
+)
+def test_distance_class_ge_number(kilometers, kilometers2, result):
     distance = Distance(kilometers)
     assert (distance >= kilometers2) is result, (
         f"'Distance({kilometers}) >= {kilometers2}' should equal to {result}"
@@ -272,7 +301,24 @@ def test_distance_class_ge(kilometers, kilometers2, result):
         (30, 100, True)
     ]
 )
-def test_distance_class_lt(kilometers, kilometers2, result):
+def test_distance_class_lt_distance(kilometers, kilometers2, result):
+    distance1 = Distance(kilometers)
+    distance2 = Distance(kilometers2)
+    assert (distance1 < distance2) is result, (
+        f"'Distance({kilometers}) < Distance({kilometers2})' should equal to {result}"
+    )
+
+
+@pytest.mark.parametrize(
+    'kilometers,kilometers2,result',
+    [
+        (50, 50, False),
+        (100, 30, False),
+        (300, 100, False),
+        (30, 100, True)
+    ]
+)
+def test_distance_class_lt_number(kilometers, kilometers2, result):
     distance = Distance(kilometers)
     assert (distance < kilometers2) is result, (
         f"'Distance({kilometers}) < {kilometers2}' should equal to {result}"
@@ -288,7 +334,24 @@ def test_distance_class_lt(kilometers, kilometers2, result):
         (30, 100, True)
     ]
 )
-def test_distance_class_le(kilometers, kilometers2, result):
+def test_distance_class_le_distance(kilometers, kilometers2, result):
+    distance1 = Distance(kilometers)
+    distance2 = Distance(kilometers2)
+    assert (distance1 <= distance2) is result, (
+        f"'Distance({kilometers}) <= Distance({kilometers2})' should equal to {result}"
+    )
+
+
+@pytest.mark.parametrize(
+    'kilometers,kilometers2,result',
+    [
+        (50, 50, True),
+        (100, 30, False),
+        (300, 100, False),
+        (30, 100, True)
+    ]
+)
+def test_distance_class_le_number(kilometers, kilometers2, result):
     distance = Distance(kilometers)
     assert (distance <= kilometers2) is result, (
         f"'Distance({kilometers}) <= {kilometers2}' should equal to {result}"
