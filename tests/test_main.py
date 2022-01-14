@@ -3,15 +3,15 @@ import pytest
 
 from contextlib import redirect_stdout
 
-from app.main import Distance
-
+# from app.main import Distance
+from app.Distance import Distance
 
 @pytest.mark.parametrize(
     'kilometers',
     [
-        (50,),
-        (100,),
-        (300,)
+        50,
+        100,
+        300
     ]
 )
 def test_distance_class_init(kilometers):
@@ -46,19 +46,62 @@ def test_distance_class_str(kilometers, output):
 
 
 @pytest.mark.parametrize(
-    'kilometers,kilometers2,result',
+    'kilometers,output',
+    [
+        (50, "Distance(km=50)"),
+        (100, "Distance(km=100)"),
+        (300, "Distance(km=300)")
+    ]
+)
+def test_distance_class_str(kilometers, output):
+    distance = Distance(kilometers)
+
+    assert repr(distance) == output, (
+        f"'repr(distance)' should equal to {output} "
+        f"when distance is created with 'Distance({kilometers})'"
+    )
+
+
+@pytest.mark.parametrize(
+    'kilometers1,kilometers2,kilometers3',
     [
         (50, 15, 65),
         (100, 30, 130),
         (300, 100, 400)
     ]
 )
-def test_distance_class_add(kilometers, kilometers2, result):
-    distance = Distance(kilometers)
-    dist2 = distance + kilometers2
-    assert dist2 == result, (
-        f"The sum of 'Distance({kilometers})' and {kilometers2} "
-        f"should equal to {result}"
+def test_distance_class_add_distance_and_distance(kilometers1, kilometers2, kilometers3):
+    distance1 = Distance(kilometers1)
+    distance2 = Distance(kilometers2)
+    distance3 = distance1 + distance2
+    assert isinstance(distance3, Distance), (
+        "Result of sum of Distance instances should be "
+        "Distance instance"
+    )
+    assert distance3.km == kilometers3, (
+        f"distance3.km should equal to {kilometers3}, "
+        f"when 'distance3 = Distance({kilometers1}) + Distance({kilometers2})'"
+    )
+
+
+@pytest.mark.parametrize(
+    'kilometers1,kilometers2,result',
+    [
+        (50, 15, 65),
+        (100, 30, 130),
+        (300, 100, 400)
+    ]
+)
+def test_distance_class_add_distance_and_number(kilometers1, kilometers2, result):
+    distance1 = Distance(kilometers1)
+    distance2 = distance1 + kilometers2
+    assert isinstance(distance2, Distance), (
+        "Result of sum of Distance instance and number should be "
+        "Distance instance"
+    )
+    assert distance2.km == result, (
+        f"distance2.km should equal to {result}, "
+        f"when 'distance3 = Distance({kilometers1}) + {kilometers2}'"
     )
 
 
@@ -70,18 +113,42 @@ def test_distance_class_add(kilometers, kilometers2, result):
         (300, 100, 400)
     ]
 )
-def test_distance_class_iadd(kilometers, kilometers2, result):
-    distance = Distance(kilometers)
-    instance_1 = distance
-    distance += kilometers2
-    instance_2 = distance
-    assert distance.km == result, (
-        f"Attribute 'km' of Distance instance should become {result} "
-        f"when your initial 'km' equals to {kilometers} "
-        f"and you '+=' {kilometers2} to your instance"
-    )
+def test_distance_class_iadd_distance(kilometers, kilometers2, result):
+    distance1 = Distance(kilometers)
+    instance_1 = distance1
+    distance2 = Distance(kilometers2)
+    distance1 += distance2
+    instance_2 = distance1
     assert instance_1 is instance_2, (
         "__iadd__ should return the same instance"
+    )
+    assert distance1.km == result, (
+        f"distance1.km should equal to {result}, "
+        f"when 'distance1' is Distance({kilometers}) and "
+        f"'distance1 += Distance({kilometers2})"
+    )
+
+
+@pytest.mark.parametrize(
+    'kilometers,kilometers2,result',
+    [
+        (50, 15, 65),
+        (100, 30, 130),
+        (300, 100, 400)
+    ]
+)
+def test_distance_class_iadd_number(kilometers, kilometers2, result):
+    distance1 = Distance(kilometers)
+    instance_1 = distance1
+    distance1 += kilometers2
+    instance_2 = distance1
+    assert instance_1 is instance_2, (
+        "__iadd__ should return the same instance"
+    )
+    assert distance1.km == result, (
+        f"'distance1.km' should equal to {result}, "
+        f"when 'distance1' is Distance({kilometers}) and "
+        f"'distance1 += {kilometers2}'"
     )
 
 
@@ -94,10 +161,15 @@ def test_distance_class_iadd(kilometers, kilometers2, result):
     ]
 )
 def test_distance_class_mul(kilometers, number, result):
-    distance = Distance(kilometers)
-    assert distance * number == result, (
-        f"Instance multiplied by {number} should equal to {result}, "
-        f"when instance.km equals to {kilometers}"
+    distance1 = Distance(kilometers)
+    distance2 = distance1 * number
+    assert isinstance(distance2, Distance), (
+        "Result of Distance instance multiplied by number should be "
+        "Distance instance"
+    )
+    assert distance2.km == result, (
+        f"distance2.km should equal to {result}, "
+        f"when 'distance2 = Distance({kilometers}) * {number}'"
     )
 
 
@@ -109,11 +181,16 @@ def test_distance_class_mul(kilometers, number, result):
         (45, 5, 9)
     ]
 )
-def test_distance_class_truediv(kilometers, number, result):
-    distance = Distance(kilometers)
-    assert distance / number == result, (
-        f"Instance divided by {number} should equal to {result}, "
-        f"when instance.km equals to {kilometers}"
+def test_distance_class_mul(kilometers, number, result):
+    distance1 = Distance(kilometers)
+    distance2 = distance1 / number
+    assert isinstance(distance2, Distance), (
+        "Result of Distance instance divided by number should be "
+        "Distance instance"
+    )
+    assert distance2.km == result, (
+        f"distance2.km should equal to {result}, "
+        f"when 'distance2 = Distance({kilometers}) / {number}'"
     )
 
 
@@ -125,11 +202,16 @@ def test_distance_class_truediv(kilometers, number, result):
         (45, 10, 5)
     ]
 )
-def test_distance_class_mod(kilometers, number, result):
-    distance = Distance(kilometers)
-    assert distance % number == result, (
-        f"Instance modulo {number} should equal to {result}, "
-        f"when instance.km equals to {kilometers}"
+def test_distance_class_mul(kilometers, number, result):
+    distance1 = Distance(kilometers)
+    distance2 = distance1 % number
+    assert isinstance(distance2, Distance), (
+        "Result of Distance instance modulo number should be "
+        "Distance instance"
+    )
+    assert distance2.km == result, (
+        f"distance2.km should equal to {result}, "
+        f"when 'distance2 = Distance({kilometers}) % {number}'"
     )
 
 
