@@ -4,7 +4,7 @@
 - Read [Python magic methods](https://habr.com/ru/post/186608/)
 
 Every day you have morning running. You want to store your result. 
-To easy calculating, comparison and printing you result write class
+For easier calculating, comparison and printing your result write class
 `Distance`.
 
 `Distance`'s constructor takes only
