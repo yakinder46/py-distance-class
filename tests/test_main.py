@@ -56,7 +56,7 @@ def test_distance_class_str(kilometers, output):
         (100, "Distance(km=100)"),
         (300, "Distance(km=300)"),
         (12.5, "Distance(km=12.5)"),
-        (.6, "Distance(km=0.6)")
+        (0.6, "Distance(km=0.6)")
     ]
 )
 def test_distance_class_str(kilometers, output):
