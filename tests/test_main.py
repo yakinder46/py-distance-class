@@ -5,12 +5,15 @@ from contextlib import redirect_stdout
 
 from app.main import Distance
 
+
 @pytest.mark.parametrize(
     'kilometers',
     [
         50,
         100,
-        300
+        300,
+        12.5,
+        0.6
     ]
 )
 def test_distance_class_init(kilometers):
@@ -26,7 +29,9 @@ def test_distance_class_init(kilometers):
     [
         (50, "Distance: 50 kilometers.\n"),
         (100, "Distance: 100 kilometers.\n"),
-        (300, "Distance: 300 kilometers.\n")
+        (300, "Distance: 300 kilometers.\n"),
+        (12.5, "Distance: 12.5 kilometers.\n"),
+        (0.6, "Distance: 0.6 kilometers.\n")
     ]
 )
 def test_distance_class_str(kilometers, output):
@@ -49,7 +54,9 @@ def test_distance_class_str(kilometers, output):
     [
         (50, "Distance(km=50)"),
         (100, "Distance(km=100)"),
-        (300, "Distance(km=300)")
+        (300, "Distance(km=300)"),
+        (12.5, "Distance(km=12.5)"),
+        (.6, "Distance(km=0.6)")
     ]
 )
 def test_distance_class_str(kilometers, output):
@@ -66,7 +73,9 @@ def test_distance_class_str(kilometers, output):
     [
         (50, 15, 65),
         (100, 30, 130),
-        (300, 100, 400)
+        (300, 100, 400),
+        (12.3, 34.0, 46.3),
+        (0.1, 0.3, 0.4)
     ]
 )
 def test_distance_class_add_distance_and_distance(kilometers1, kilometers2, kilometers3):
@@ -88,7 +97,9 @@ def test_distance_class_add_distance_and_distance(kilometers1, kilometers2, kilo
     [
         (50, 15, 65),
         (100, 30, 130),
-        (300, 100, 400)
+        (300, 100, 400),
+        (70.5, 20.5, 91.0),
+        (120.1, 120.1, 240.2)
     ]
 )
 def test_distance_class_add_distance_and_number(kilometers1, kilometers2, result):
@@ -109,7 +120,9 @@ def test_distance_class_add_distance_and_number(kilometers1, kilometers2, result
     [
         (50, 15, 65),
         (100, 30, 130),
-        (300, 100, 400)
+        (300, 100, 400),
+        (45.0, 30.5, 75.5),
+        (18.2, 10.2, 28.4)
     ]
 )
 def test_distance_class_iadd_distance(kilometers, kilometers2, result):
@@ -133,7 +146,9 @@ def test_distance_class_iadd_distance(kilometers, kilometers2, result):
     [
         (50, 15, 65),
         (100, 30, 130),
-        (300, 100, 400)
+        (300, 100, 400),
+        (15.5, 14.5, 30.0),
+        (20.0, 40.5, 60.5)
     ]
 )
 def test_distance_class_iadd_number(kilometers, kilometers2, result):
@@ -156,7 +171,9 @@ def test_distance_class_iadd_number(kilometers, kilometers2, result):
     [
         (50, 3, 150),
         (30, 7, 210),
-        (45, 5, 225)
+        (45, 5, 225),
+        (1.5, 3.0, 4.5),
+        (20.0, 4.0, 80.0)
     ]
 )
 def test_distance_class_mul(kilometers, number, result):
@@ -177,7 +194,9 @@ def test_distance_class_mul(kilometers, number, result):
     [
         (50, 3, 16.67),
         (30, 7, 4.29),
-        (45, 5, 9)
+        (45, 5, 9),
+        (12.0, 3.0, 4.0),
+        (160.0, 8.0, 20.0)
     ]
 )
 def test_distance_class_truediv(kilometers, number, result):
@@ -199,7 +218,9 @@ def test_distance_class_truediv(kilometers, number, result):
         (50, 50, True),
         (100, 30, False),
         (300, 100, False),
-        (30, 30, True)
+        (30, 30, True),
+        (10.0, 10.0, True),
+        (20.0, 5.0, False)
     ]
 )
 def test_distance_class_eq_distance(kilometers, kilometers2, result):
@@ -216,7 +237,9 @@ def test_distance_class_eq_distance(kilometers, kilometers2, result):
         (50, 50, True),
         (100, 30, False),
         (300, 100, False),
-        (30, 30, True)
+        (30, 30, True),
+        (10.0, 10.0, True),
+        (20.0, 5.0, False)
     ]
 )
 def test_distance_class_eq_number(kilometers, kilometers2, result):
@@ -232,7 +255,10 @@ def test_distance_class_eq_number(kilometers, kilometers2, result):
         (50, 50, False),
         (100, 30, True),
         (300, 100, True),
-        (30, 100, False)
+        (30, 100, False),
+        (10.0, 10.0, False),
+        (20.0, 5.0, True),
+        (5.0, 20.0, False)
     ]
 )
 def test_distance_class_gt_distance(kilometers, kilometers2, result):
@@ -249,7 +275,10 @@ def test_distance_class_gt_distance(kilometers, kilometers2, result):
         (50, 50, False),
         (100, 30, True),
         (300, 100, True),
-        (30, 100, False)
+        (30, 100, False),
+        (10.0, 10.0, False),
+        (20.0, 5.0, True),
+        (5.0, 20.0, False)
     ]
 )
 def test_distance_class_gt_number(kilometers, kilometers2, result):
@@ -265,7 +294,10 @@ def test_distance_class_gt_number(kilometers, kilometers2, result):
         (50, 50, True),
         (100, 30, True),
         (300, 100, True),
-        (30, 100, False)
+        (30, 100, False),
+        (10.0, 10.0, True),
+        (20.0, 5.0, True),
+        (5.0, 20.0, False)
     ]
 )
 def test_distance_class_ge_distance(kilometers, kilometers2, result):
@@ -282,7 +314,10 @@ def test_distance_class_ge_distance(kilometers, kilometers2, result):
         (50, 50, True),
         (100, 30, True),
         (300, 100, True),
-        (30, 100, False)
+        (30, 100, False),
+        (10.0, 10.0, True),
+        (20.0, 5.0, True),
+        (5.0, 20.0, False)
     ]
 )
 def test_distance_class_ge_number(kilometers, kilometers2, result):
@@ -298,7 +333,10 @@ def test_distance_class_ge_number(kilometers, kilometers2, result):
         (50, 50, False),
         (100, 30, False),
         (300, 100, False),
-        (30, 100, True)
+        (30, 100, True),
+        (10.0, 10.0, False),
+        (20.0, 5.0, False),
+        (5.0, 20.0, True)
     ]
 )
 def test_distance_class_lt_distance(kilometers, kilometers2, result):
@@ -315,7 +353,10 @@ def test_distance_class_lt_distance(kilometers, kilometers2, result):
         (50, 50, False),
         (100, 30, False),
         (300, 100, False),
-        (30, 100, True)
+        (30, 100, True),
+        (10.0, 10.0, False),
+        (20.0, 5.0, False),
+        (5.0, 20.0, True)
     ]
 )
 def test_distance_class_lt_number(kilometers, kilometers2, result):
@@ -331,7 +372,10 @@ def test_distance_class_lt_number(kilometers, kilometers2, result):
         (50, 50, True),
         (100, 30, False),
         (300, 100, False),
-        (30, 100, True)
+        (30, 100, True),
+        (10.0, 10.0, True),
+        (20.0, 5.0, False),
+        (5.0, 20.0, True)
     ]
 )
 def test_distance_class_le_distance(kilometers, kilometers2, result):
@@ -348,7 +392,10 @@ def test_distance_class_le_distance(kilometers, kilometers2, result):
         (50, 50, True),
         (100, 30, False),
         (300, 100, False),
-        (30, 100, True)
+        (30, 100, True),
+        (10.0, 10.0, True),
+        (20.0, 5.0, False),
+        (5.0, 20.0, True)
     ]
 )
 def test_distance_class_le_number(kilometers, kilometers2, result):
@@ -363,11 +410,18 @@ def test_distance_class_le_number(kilometers, kilometers2, result):
     [
         50,
         100,
-        300
+        300,
+        100.0,
+        12.0
     ]
 )
 def test_distance_class_len(kilometers):
     distance = Distance(kilometers)
-    assert len(distance) == distance.km, (
-        f"'len()' for instance should return instance.km"
-    )
+    if isinstance(kilometers, int):
+        assert len(distance) == distance.km, (
+            f"'len()' for instance should return instance.km"
+        )
+    else:
+        assert kilometers == distance.km, (
+            f"'len()' for instance of float type should return instance.km"
+        )
