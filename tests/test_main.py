@@ -59,7 +59,7 @@ def test_distance_class_str(kilometers, output):
         (0.6, "Distance(km=0.6)")
     ]
 )
-def test_distance_class_str(kilometers, output):
+def test_distance_class_repr(kilometers, output):
     distance = Distance(kilometers)
 
     assert repr(distance) == output, (
