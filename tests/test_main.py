@@ -176,7 +176,7 @@ def test_distance_class_iadd_number(kilometers, kilometers2, result):
         (21.4, 5.88, 125.832)
     ]
 )
-def test_distance_class_mul(kilometers, number, result):
+def test_distance_class_mul_number(kilometers, number, result):
     distance1 = Distance(kilometers)
     distance2 = distance1 * number
     assert isinstance(distance2, Distance), (
@@ -186,6 +186,16 @@ def test_distance_class_mul(kilometers, number, result):
     assert distance2.km == result, (
         f"distance2.km should equal to {result}, "
         f"when 'distance2 = Distance({kilometers}) * {number}'"
+    )
+
+
+def test_distance_class_mul_distance():
+    distance1 = Distance(5)
+    distance2 = Distance(3)
+    with pytest.raises(TypeError) as error_info:
+        distance1 * distance2
+    assert "unsupported operand" in str(error_info.value), (
+        "'__mul__' method should not accept Distance instance"
     )
 
 
@@ -199,7 +209,7 @@ def test_distance_class_mul(kilometers, number, result):
         (26.88, 5.6, 4.8)
     ]
 )
-def test_distance_class_truediv(kilometers, number, result):
+def test_distance_class_truediv_number(kilometers, number, result):
     distance1 = Distance(kilometers)
     distance2 = distance1 / number
     assert isinstance(distance2, Distance), (
@@ -209,6 +219,16 @@ def test_distance_class_truediv(kilometers, number, result):
     assert distance2.km == result, (
         f"distance2.km should equal to {result}, "
         f"when 'distance2 = Distance({kilometers}) / {number}'"
+    )
+
+
+def test_distance_class_truediv_distance():
+    distance1 = Distance(30)
+    distance2 = Distance(3)
+    with pytest.raises(TypeError) as error_info:
+        distance1 / distance2
+    assert "unsupported operand" in str(error_info.value), (
+        "'__truediv__' method should not accept Distance instance"
     )
 
 
