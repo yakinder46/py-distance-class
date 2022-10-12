@@ -195,7 +195,7 @@ def test_distance_class_mul_distance():
     try:
         result = distance1 * distance2
     except TypeError:
-        assert True
+        pass
     else:
         assert result is None, (
             "'__mul__' method should not accept Distance instance"
@@ -231,7 +231,7 @@ def test_distance_class_truediv_distance():
     try:
         result = distance1 / distance2
     except TypeError:
-        assert True
+        pass
     else:
         assert result is None, (
             "'__truediv__' method should not accept Distance instance"
