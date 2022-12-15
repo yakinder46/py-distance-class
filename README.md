@@ -77,10 +77,4 @@ distance > 120  # False
 distance == 100  # False
 distance <= 49  # False
 distance >= 50  # True
-
-# both variants ^ are possible
-
-__len__
-distance = Distance(20)
-len(distance) == 20
 ```
