@@ -28,8 +28,8 @@ else:
 **Good example:**
 ```python
 def add_distance(
-     dist1: Distance | int | float, 
-     dist2: Distance | int | float
+    dist1: Distance | int | float, 
+    dist2: Distance | int | float
 ) -> Distance:
     return dist1 + dist2
 ```
@@ -41,7 +41,7 @@ from typing import Union
 def add_distance(
     dist1: Union[Distance, int, float], 
     dist2: Union[Distance, int, float]
-)-> Distance:
+) -> Distance:
     return dist1 + dist2
 ```
 
