@@ -60,3 +60,19 @@ If you encounter a `NameError` due to annotations, you can add the following imp
 ```python
 from __future__ import annotations
 ```
+
+## Support correct types
+
+1. ```__truediv__``` and ```__mul__``` should not accept Distance instance as argument.
+
+**Correct example:**
+```python
+def __truediv__(self, other: int | float) -> Distance:
+    ...
+```
+
+**Incorrect example:**
+```python
+def __truediv__(self, other: int | float | Distance) -> Distance:
+    ...
+```
