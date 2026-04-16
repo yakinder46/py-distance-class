@@ -1,72 +1,61 @@
+from typing import Any
+
+
 class Distance:
-    def __init__(self, km):
-        self.km = km
+    def __init__(self, metters: int | float, cm: int | float = 0) -> None:
+        self.meters_total = metters + cm / 100
 
-    def __str__(self):
-        return f"Distance: {self.km} kilometers."
+    @property
+    def km(self) -> float:
+        return self.meters_total
 
-    def __repr__(self):
-        return f"Distance(km={self.km})"
+    def __str__(self) -> str:
+        value = int(self.km) if self.km == int(self.km) else self.km
+        return f"Distance: {value} kilometers."
 
-    def __add__(self, other):
+    def __repr__(self) -> str:
+        value = int(self.km) if self.km == int(self.km) else self.km
+        return f"Distance(km={value})"
+
+    def _get_m(self, other: Any) -> float:
         if isinstance(other, Distance):
-            return Distance(self.km + other.km)
-        elif isinstance(other, (int, float)):
-            return Distance(self.km + other)
-        return NotImplemented
+            return other.meters_total
+        return float(other)
 
-    def __iadd__(self, other):
-        if isinstance(other, Distance):
-            self.km += other.km
-        elif isinstance(other, (int, float)):
-            self.km += other
-        else:
-            return NotImplemented
+    def __add__(self, other: Any) -> "Distance":
+        return Distance(self.meters_total + self._get_m(other))
+
+    def __iadd__(self, other: Any) -> "Distance":
+        self.meters_total += self._get_m(other)
         return self
 
-    def __mul__(self, other):
-        if isinstance(other, (int, float)):
-            return Distance(self.km * other)
-        return NotImplemented
+    def __mul__(self, number: int | float) -> "Distance":
+        return Distance(self.meters_total * number)
 
-    def __truediv__(self, other):
-        if isinstance(other, (int, float)):
-            return Distance(round(self.km / other, 2))
-        return NotImplemented
+    def __truediv__(self, number: int | float) -> "Distance":
+        return Distance(round(self.meters_total / number, 2))
 
-    def _get_value(self, other):
-        if isinstance(other, Distance):
-            return other.km
-        elif isinstance(other, (int, float)):
-            return other
-        return NotImplemented
+    # Методы сравнения
+    def __lt__(self, other: Any) -> bool:
+        return self.meters_total < self._get_m(other)
 
-    def __lt__(self, other):
-        value = self._get_value(other)
-        if value is NotImplemented:
-            return NotImplemented
-        return self.km < value
+    def __gt__(self, other: Any) -> bool:
+        return self.meters_total > self._get_m(other)
 
-    def __le__(self, other):
-        value = self._get_value(other)
-        if value is NotImplemented:
-            return NotImplemented
-        return self.km <= value
+    def __eq__(self, other: Any) -> bool:
+        return round(self.meters_total, 2) == round(self._get_m(other), 2)
 
-    def __eq__(self, other):
-        value = self._get_value(other)
-        if value is NotImplemented:
-            return NotImplemented
-        return self.km == value
+    def __le__(self, other: Any) -> bool:
+        return self.meters_total <= self._get_m(other)
 
-    def __gt__(self, other):
-        value = self._get_value(other)
-        if value is NotImplemented:
-            return NotImplemented
-        return self.km > value
+    def __ge__(self, other: Any) -> bool:
+        return self.meters_total >= self._get_m(other)
 
-    def __ge__(self, other):
-        value = self._get_value(other)
-        if value is NotImplemented:
-            return NotImplemented
-        return self.km >= value
+
+class KiloDistance(Distance):
+    def __init__(self, km: int | float) -> None:
+        super().__init__(km * 1000)
+
+    @property
+    def km(self) -> float:
+        return self.meters_total / 1000
