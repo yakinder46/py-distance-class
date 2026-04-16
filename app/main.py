@@ -37,7 +37,7 @@ class Distance:
         return Distance(self.meters_total * number)
 
     def __truediv__(self, number: int | float) -> "Distance":
-        return Distance(round(self.meters_total / number, 2)
+        return Distance(round(self.meters_total / number, 2))
 
     def __lt__(self, other: Any) -> bool:
         return self.meters_total < self._get_meters(other)
